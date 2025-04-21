@@ -1,0 +1,62 @@
+# 🐍 Python
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+*.pyc
+*.pkl
+*.sqlite3
+*.log
+
+# venv (virtual environment)
+venv/
+.env
+.env.*
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+
+# 📦 Pacotes e dependências
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# 📂 Cache de testes e cobertura
+htmlcov/
+.tox/
+.coverage
+.cache/
+.pytest_cache/
+
+# 🐳 Docker
+*.pid
+*.sock
+docker-compose.override.yml
+
+# 📁 Java (Apijava/)
+Apijava/target/
+Apijava/.classpath
+Apijava/.project
+Apijava/.settings/
+Apijava/*.iml
+Apijava/.gradle/
+Apijava/build/
+*.jar
+*.war
+*.ear
+
+# 🔐 Segurança
+secrets.*
+credentials.*
+
+# 🧪 Testes e relatórios
+*.spec.js.snap
+test-results/
+coverage/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

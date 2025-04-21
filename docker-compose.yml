@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    container_name: meu-banco
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  ltafantasy-api:
+    build: ./LTAFantasyAPI
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      - .env
+  ltafantasy-api-py:
+    build: ./LTAFantasyInteligence
+    container_name: api-python
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ltafantasy-api
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
