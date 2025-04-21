@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
   ltafantasy-api-py:
-    build: ./LTAFantasyInteligence
+    build: ./LTAFantasyIntelligence
     container_name: api-python
     ports:
       - "8000:8000"
