@@ -1,5 +1,5 @@
 from extrairDadosFantasy import extrair_dados_fantasy
-from extrairDadosJogadoresSul import extrair_dados_liga_sul
+from extrairDadosJogadoresSul import extrair_dados
 from jogador import Jogador
 import json
 from termcolor import colored
@@ -17,7 +17,7 @@ def montar_dados_jogadores(cookieID):
         else: print(colored("Sucesso!", "green"))
         
         print(colored("Coletando estatisticas da liga...", "white"))
-        dadosLtaSul = extrair_dados_liga_sul()
+        dadosLtaSul = extrair_dados()
         print(colored("Sucesso!", "green"))
         
         print(colored("Montando objetos...", "white"))
@@ -59,19 +59,26 @@ def atualizar_jogadores(cookieID):
         jogadores_json = montar_dados_jogadores(cookieID)
         
         
-        print(colored("\nEnviando todos os dados para a API...", "white"))    
-        response = requests.post(url_api,data=jogadores_json,headers=headers)
-        if (response.status_code==200):
-            print(colored("Sucesso", "green"))
-        else:
-            print(colored("Falhou!", "red")) 
+        print(colored("\nEnviando todos os dados para a API...", "white"))   
+        try: 
+            response = requests.post(url_api,data=jogadores_json,headers=headers)
+            if (response.status_code==200):
+                print(colored("Sucesso", "green"))
+            else:
+                print(colored("Falhou!", "red")) 
+        except:
+            print(colored("conexao falhou!", "red"))
         
         print(colored("Atualizando todos os dados da API...", "white"))
-        response = requests.patch(url_api,data=jogadores_json, headers=headers)
-        if (response.status_code==200):
-            print(colored("Sucesso", "green"))
-        else:
-            print(colored("Falhou!", "red"))
+        try:
+            response = requests.patch(url_api,data=jogadores_json, headers=headers)
+            if (response.status_code==200):
+                print(colored("Sucesso", "green"))
+            else:
+                print(colored("Falhou!", "red"))
+        except:
+            print(colored("conexao falhou!", "red"))
+            
     except RuntimeError as e:
         print(colored("ERRO!", "red"))
         print(e)

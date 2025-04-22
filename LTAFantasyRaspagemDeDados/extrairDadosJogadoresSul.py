@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 import util
 
-def extrair_dados_liga_sul():
+def extrair_dados_por_liga(endpoint_liga):
     try:
         html={
             "linhas":"table.wikitable > tbody > tr:has(td.spstats-player)",
@@ -19,7 +19,7 @@ def extrair_dados_liga_sul():
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto("https://lol.fandom.com/wiki/LTA_South/2025_Season/Split_2/Player_Statistics")
+            page.goto("https://lol.fandom.com/wiki"+endpoint_liga)
 
             page.wait_for_selector(html["linhas"])
             linhas = page.locator(html["linhas"])
@@ -50,3 +50,16 @@ def extrair_dados_liga_sul():
             return jogadores
     except RuntimeError as e:
         print(f"Caught: {e}")
+        
+def extrair_dados():
+    endpoint_liga = {
+        "LTANorte":"/LTA_North/2025_Season/Split_2/Player_Statistics",
+        "LTASul":"/LTA_South/2025_Season/Split_2/Player_Statistics"
+    }
+    jogadores =  []
+    for endpoint in endpoint_liga.values():
+        jogadores_por_liga = extrair_dados_por_liga(endpoint)
+        for jogador in jogadores_por_liga:
+            jogadores.append(jogador)
+    return jogadores
+        
