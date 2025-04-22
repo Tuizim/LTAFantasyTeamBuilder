@@ -39,5 +39,8 @@ public class Jogador {
     private double ultimo_ponto;
     @Column
     private double valor_atual;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Liga liga;
 }
 
