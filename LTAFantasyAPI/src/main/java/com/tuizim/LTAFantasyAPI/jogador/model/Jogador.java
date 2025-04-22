@@ -46,8 +46,5 @@ public class Jogador {
     @Column
     @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double valor_atual;
-    @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
-    private double flutuacao_mercado;
 }
 

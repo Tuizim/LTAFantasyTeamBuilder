@@ -64,39 +64,15 @@ public class JogadorService {
             if (updatedjogador == null) {
                 continue;
             }
-            if (jogador.getRota()!=null) {
-                updatedjogador.setRota(jogador.getRota());
-            }
-            if (jogador.getJogos() > 0) {
-                updatedjogador.setJogos(jogador.getJogos());
-            }
-            if (jogador.getWin_rate() > 0.0) {
-                updatedjogador.setWin_rate(jogador.getWin_rate());
-            }
-            if (jogador.getKda() > 0.0) {
-                updatedjogador.setKda(jogador.getKda());
-            }
-            if (jogador.getCs_minuto() > 0.0) {
-                updatedjogador.setCs_minuto(jogador.getCs_minuto());
-            }
-            if (jogador.getParticipa_abate() > 0.0) {
-                updatedjogador.setParticipa_abate(jogador.getParticipa_abate());
-            }
-            if (jogador.getMedia_ponto() > 0.0) {
-                updatedjogador.setMedia_ponto(jogador.getMedia_ponto());
-            }
-            if (jogador.getUltimo_ponto() > 0.0) {
-                updatedjogador.setUltimo_ponto(jogador.getUltimo_ponto());
-            }
-            if (jogador.getValor_atual() > 0.0) {
-                updatedjogador.setValor_atual(jogador.getValor_atual());
-            }
-            if (jogador.getFlutuacao_mercado() != 0.0) {
-                if (jogador.getFlutuacao_mercado()==jogador.getValor_atual()){
-                    updatedjogador.setFlutuacao_mercado(0.0);
-                }
-                else updatedjogador.setFlutuacao_mercado(jogador.getFlutuacao_mercado());
-            }
+            updatedjogador.setRota(jogador.getRota());
+            updatedjogador.setJogos(jogador.getJogos());
+            updatedjogador.setWin_rate(jogador.getWin_rate());
+            updatedjogador.setKda(jogador.getKda());
+            updatedjogador.setCs_minuto(jogador.getCs_minuto());
+            updatedjogador.setParticipa_abate(jogador.getParticipa_abate());
+            updatedjogador.setMedia_ponto(jogador.getMedia_ponto());
+            updatedjogador.setUltimo_ponto(jogador.getUltimo_ponto());
+            updatedjogador.setValor_atual(jogador.getValor_atual());
             newJogadores.add(updatedjogador);
         }
         return jogadorDAO.saveAll(newJogadores);
