@@ -3,11 +3,11 @@ import json
 class JogadoresPorRota:
     def __init__(self):
         self.rotas = {
-            "top": [],
-            "jungle": [],
-            "mid": [],
-            "support": [],
-            "bottom": []
+            "TOP": [],
+            "JUNGLE": [],
+            "MID": [],
+            "SUPPORT": [],
+            "BOTTOM": []
         }
     def adicionar_jogador(self,jogador:Player):
         if jogador.rota not in self.rotas:
