@@ -68,7 +68,7 @@ def extrair_dados_fantasy(cookieid):
                         jogadores = []
                         break
                     else:
-                        print(f"Time out na tentativa {tentativa}. tentando novamente...")
+                        print(f"Time out na tentativa {tentativa+1}. tentando novamente...")
                         continue
         return jogadores if sucess==True else []
             

@@ -13,7 +13,7 @@ class Jogador(BaseModel):
     media_ponto: float = Field(default=0.0, description="Média de pontos")
     ultimo_ponto: float = Field(default=0.0, description="Última pontuação obtida")
     valor_atual: float = Field(default=0.0, description="Valor de mercado atual")
-    # flutuacao_mercado: float = Field(default=0.0, description="Variação no mercado")
+    liga: str
     
     def to_dict(self):
         return self.dict()

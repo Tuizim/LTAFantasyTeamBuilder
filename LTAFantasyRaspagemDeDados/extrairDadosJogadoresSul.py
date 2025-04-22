@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 import util
 
-def extrair_dados_por_liga(endpoint_liga):
+def extrair_dados_por_liga(liga,endpoint_liga):
     try:
         html={
             "linhas":"table.wikitable > tbody > tr:has(td.spstats-player)",
@@ -44,6 +44,7 @@ def extrair_dados_por_liga(endpoint_liga):
                     "kda":util.normalizar_float(kda),
                     "cs_minuto": util.normalizar_float(cs_minuto),
                     "participa_abate":util.normalizar_porc(participa_abate),
+                    "liga":liga
                 } 
                 )
             browser.close()
@@ -57,8 +58,8 @@ def extrair_dados():
         "LTASul":"/LTA_South/2025_Season/Split_2/Player_Statistics"
     }
     jogadores =  []
-    for endpoint in endpoint_liga.values():
-        jogadores_por_liga = extrair_dados_por_liga(endpoint)
+    for liga,endpoint in endpoint_liga.items():
+        jogadores_por_liga = extrair_dados_por_liga(liga,endpoint)
         for jogador in jogadores_por_liga:
             jogadores.append(jogador)
     return jogadores

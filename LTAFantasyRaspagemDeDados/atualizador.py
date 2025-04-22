@@ -14,6 +14,9 @@ def montar_dados_jogadores(cookieID):
         if (dadosFantasy==None):
             print(colored("Falhou!", "red"))
             sys.exit()
+        elif (len(dadosFantasy)==0):
+            print(colored("Servico LTAFantasy esta fora do ar!", "red"))
+            sys.exit()
         else: print(colored("Sucesso!", "green"))
         
         print(colored("Coletando estatisticas da liga...", "white"))
@@ -35,8 +38,8 @@ def montar_dados_jogadores(cookieID):
                         participa_abate= estatistica["participa_abate"],
                         media_ponto= jogador["media_pontos"],
                         ultimo_ponto= jogador["ultimo_ponto"],
-                        valor_atual= jogador["valor_atual"]
-                        # flutuacao_mercado= jogador["flutuacao_mercado"],
+                        valor_atual= jogador["valor_atual"],
+                        liga= jogador["liga"]
                     )
                     jogadores.append(jogador_obj.to_dict())
         jogadores_json = json.dumps(jogadores, indent=4, ensure_ascii=False)
