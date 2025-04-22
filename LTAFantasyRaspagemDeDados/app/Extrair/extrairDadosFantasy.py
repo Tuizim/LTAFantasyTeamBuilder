@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
-import util
-
+import app.Comum.util as util
+import app.Comum.logs as logs
 def extrair_dados_fantasy(cookieid):
     try:
         cookies = [
@@ -64,11 +64,11 @@ def extrair_dados_fantasy(cookieid):
                     break
                 except:
                     if (tentativa == tentativas-1):
-                        print("Falha ao carregar os dados após várias tentativas.")
+                        logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
                         jogadores = []
                         break
                     else:
-                        print(f"Time out na tentativa {tentativa+1}. tentando novamente...")
+                        logs.respostas_time_out(logs.enums.timeOut.timeOut)
                         continue
         return jogadores if sucess==True else []
             

@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-import util
+import app.Comum.util as util
 
 def extrair_dados_por_liga(liga,endpoint_liga):
     try:

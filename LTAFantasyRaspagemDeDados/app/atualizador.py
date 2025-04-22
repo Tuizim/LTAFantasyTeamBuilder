@@ -1,6 +1,7 @@
-from extrairDadosFantasy import extrair_dados_fantasy
-from extrairDadosJogadoresSul import extrair_dados
-from jogador_model import Jogador
+from app.Extrair.extrairDadosFantasy import extrair_dados_fantasy
+from app.Extrair.extrairDadosJogadoresSul import extrair_dados
+from app.Models.jogador_model import Jogador
+import app.Comum.logs as logs
 import json
 from termcolor import colored
 import requests
@@ -9,21 +10,22 @@ import sys
 
 def montar_dados_jogadores(cookieID):
     try:        
-        print(colored("Coletando dados do fantasy...", "white"))
+        logs.etapas(logs.enums.Etapa.ExtraindoDadosFantasy)
         dadosFantasy = extrair_dados_fantasy(cookieID)
         if (dadosFantasy==None):
-            print(colored("Falhou!", "red"))
+            logs.respostas_falha(logs.enums.RespostaFalha)
             sys.exit()
         elif (len(dadosFantasy)==0):
-            print(colored("Servico LTAFantasy esta fora do ar!", "red"))
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
             sys.exit()
-        else: print(colored("Sucesso!", "green"))
+        else:
+            logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
         
-        print(colored("Coletando estatisticas da liga...", "white"))
+        logs.etapas(logs.enums.Etapa.ExtraindoDadosLiga)
         dadosLtaSul = extrair_dados()
-        print(colored("Sucesso!", "green"))
+        logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
         
-        print(colored("Montando objetos...", "white"))
+        logs.etapas(logs.enums.Etapa.MontandoObjeto)
         jogadores = []
         for jogador in dadosFantasy:
             for estatistica in dadosLtaSul:
@@ -44,10 +46,10 @@ def montar_dados_jogadores(cookieID):
                     jogadores.append(jogador_obj.to_dict())
         jogadores_json = json.dumps(jogadores, indent=4, ensure_ascii=False)
         if (len(jogadores_json)>0):
-            print(colored("Sucesso!", "green"))
+            logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
             return jogadores_json
     except RuntimeError as e: 
-        print(colored("ERRO!", "red"))
+        logs.respostas_falha(logs.enums.RespostaFalha.Erro)
         print(e)
 
 def atualizar_jogadores(cookieID):
@@ -57,33 +59,32 @@ def atualizar_jogadores(cookieID):
         url_api = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores/lote"
         headers = {'Content-Type': 'application/json'}
         
-        
-        print(colored("\nDados de jogadores estao sendo coletados", "white"))    
+        logs.etapas(logs.enums.Etapa.IniciandoColeta)
         jogadores_json = montar_dados_jogadores(cookieID)
         
         
-        print(colored("\nEnviando todos os dados para a API...", "white"))   
+        logs.etapas(logs.enums.Etapa.EnviandoParaApi)  
         try: 
             response = requests.post(url_api,data=jogadores_json,headers=headers)
             if (response.status_code==200):
-                print(colored("Sucesso", "green"))
+                logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
             else:
-                print(colored("Falhou!", "red")) 
+                logs.respostas_falha(logs.enums.RespostaFalha.Falhou) 
         except:
-            print(colored("conexao falhou!", "red"))
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
         
-        print(colored("Atualizando todos os dados da API...", "white"))
+        logs.etapas(logs.enums.Etapa.AtualizandoDadosDaApi)  
         try:
             response = requests.patch(url_api,data=jogadores_json, headers=headers)
             if (response.status_code==200):
-                print(colored("Sucesso", "green"))
+                logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
             else:
-                print(colored("Falhou!", "red"))
+                logs.respostas_falha(logs.enums.RespostaFalha.Falhou)
         except:
-            print(colored("conexao falhou!", "red"))
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
             
     except RuntimeError as e:
-        print(colored("ERRO!", "red"))
+        logs.respostas_falha(logs.enums.RespostaFalha.Erro)
         print(e)
     
     
