@@ -1,6 +1,6 @@
 from extrairDadosFantasy import extrair_dados_fantasy
 from extrairDadosJogadoresSul import extrair_dados
-from jogador import Jogador
+from jogador_model import Jogador
 import json
 from termcolor import colored
 import requests
