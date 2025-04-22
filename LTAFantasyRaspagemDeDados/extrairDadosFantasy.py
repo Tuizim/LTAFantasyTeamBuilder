@@ -59,9 +59,9 @@ def extrair_dados_fantasy(cookieid):
                                 "flutuacao_mercado":util.normalizar_float(flutuacao)
                             }
                         )
-                        sucess=True
-                        break
-                
+                    sucess=True
+                    browser.close()
+                    break
                 except:
                     if (tentativa == tentativas-1):
                         print("Falha ao carregar os dados após várias tentativas.")
@@ -70,8 +70,7 @@ def extrair_dados_fantasy(cookieid):
                     else:
                         print(f"Time out na tentativa {tentativa}. tentando novamente...")
                         continue
-                browser.close()
-                return jogadores if sucess==True else []
+        return jogadores if sucess==True else []
             
     except RuntimeError as e:
         print(f"Caught: {e}")
