@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +38,15 @@ public class JogadorService {
         return jogadorDAO.save(jogador);
     }
     public List<Jogador> createJogadores(List<Jogador> jogadores) {
+        List<Jogador> newJogadores = new ArrayList<>();
         for (Jogador jogador : jogadores) {
             jogador.setNickname(jogador.getNickname().toUpperCase());
+            if (!jogadorDAO.existsByNickname(jogador.getNickname()) ){
+                newJogadores.add(jogador);
+            }
         }
-        return jogadorDAO.saveAll(jogadores);
+        return jogadorDAO.saveAll(newJogadores);
     }
-
     /* METODOS ATUALIZAR*/
 
     public Jogador updateJogador(Jogador jogador) {
