@@ -25,41 +25,53 @@ def extrair_dados_fantasy(cookieid):
             "flutuacao": "div.flex.text-sm.items-center.font-kurdis.text-right.justify-end span.font-red-hat-display-semi-bold"
         }
         jogadores =[]
+        sucess = False
+        tentativas = 3
+        for tentativa in range(tentativas):
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                context = browser.new_context()
+                context.add_cookies(cookies)
+                page = context.new_page()
+                try:
+                    page.goto("https://ltafantasy.com/pt/market")
+                    page.wait_for_selector(html["jogador_div"], timeout=10000)
 
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False)
-            context = browser.new_context()
+                    jogador_divs = page.locator(html["jogador_div"])
 
-            context.add_cookies(cookies)
-            page = context.new_page()
-            page.goto("https://ltafantasy.com/pt/market")
-            page.wait_for_selector(html["jogador_div"], timeout=50000)
+                    for i in range(jogador_divs.count()):
+                        card = jogador_divs.nth(i)
+                        
+                        nick = card.locator(html["nickname"]).inner_text()
+                        lane = card.locator(html["lane"]).first.get_attribute("alt")
+                        media_pontos = card.locator(html["media_pontos"]).inner_text()
+                        ultimo_ponto = card.locator(html["ultimo_ponto"]).inner_text()
+                        valor_atual = card.locator(html["valor_atual"]).inner_text()
+                        flutuacao = card.locator(html["flutuacao"]).inner_text() if card.locator(html["flutuacao"]).count()>0 else 0
 
-            jogador_divs = page.locator(html["jogador_div"])
-
-            for i in range(jogador_divs.count()):
-                card = jogador_divs.nth(i)
+                        jogadores.append(
+                            {
+                                "nickname":nick,
+                                "rota":lane,
+                                "media_pontos": util.normalizar_float(media_pontos),
+                                "ultimo_ponto":util.normalizar_float(ultimo_ponto),
+                                "valor_atual":util.normalizar_float(valor_atual),
+                                "flutuacao_mercado":util.normalizar_float(flutuacao)
+                            }
+                        )
+                        sucess=True
+                        break
                 
-                nick = card.locator(html["nickname"]).inner_text()
-                lane = card.locator(html["lane"]).first.get_attribute("alt")
-                media_pontos = card.locator(html["media_pontos"]).inner_text()
-                ultimo_ponto = card.locator(html["ultimo_ponto"]).inner_text()
-                valor_atual = card.locator(html["valor_atual"]).inner_text()
-                flutuacao = card.locator(html["flutuacao"]).inner_text() if card.locator(html["flutuacao"]).count()>0 else 0
-                
-
-                
-                jogadores.append(
-                    {
-                        "nickname":nick,
-                        "rota":lane,
-                        "media_pontos": util.normalizar_float(media_pontos),
-                        "ultimo_ponto":util.normalizar_float(ultimo_ponto),
-                        "valor_atual":util.normalizar_float(valor_atual),
-                        "flutuacao_mercado":util.normalizar_float(flutuacao)
-                    }
-                )
-            browser.close()
-            return jogadores
+                except:
+                    if (tentativa == tentativas-1):
+                        print("Falha ao carregar os dados após várias tentativas.")
+                        jogadores = []
+                        break
+                    else:
+                        print(f"Time out na tentativa {tentativa}. tentando novamente...")
+                        continue
+                browser.close()
+                return jogadores if sucess==True else []
+            
     except RuntimeError as e:
         print(f"Caught: {e}")

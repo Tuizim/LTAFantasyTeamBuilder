@@ -18,11 +18,12 @@ services:
   ltafantasy-api:
     build: ./LTAFantasyAPI
     ports:
-      - "8080:8080"
+      - "${API_JAVA_PORT}:${API_JAVA_PORT}"
     depends_on:
       - db
     env_file:
       - .env
+
   ltafantasy-api-py:
     build: ./LTAFantasyIntelligence
     container_name: api-python
@@ -32,6 +33,16 @@ services:
       - ltafantasy-api
     env_file:
       - .env
+  
+  lta-scrapper:
+    build:
+      context: ./LTAFantasyRaspagemDeDados
+    container_name: lta-scrapper-py
+    tty: true
+    stdin_open: true
+    env_file: .env
+    depends_on:
+      - ltafantasy-api
 
 volumes:
   pgdata:

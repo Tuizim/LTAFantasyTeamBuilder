@@ -4,12 +4,17 @@ from jogador import Jogador
 import json
 from termcolor import colored
 import requests
+import os
+import sys
 
 def montar_dados_jogadores(cookieID):
     try:        
         print(colored("Coletando dados do fantasy...", "white"))
         dadosFantasy = extrair_dados_fantasy(cookieID)
-        print(colored("Sucesso!", "green"))
+        if (dadosFantasy==None):
+            print(colored("Falhou!", "red"))
+            sys.exit()
+        else: print(colored("Sucesso!", "green"))
         
         print(colored("Coletando estatisticas da liga...", "white"))
         dadosLtaSul = extrair_dados_liga_sul()
@@ -44,10 +49,14 @@ def montar_dados_jogadores(cookieID):
 
 def atualizar_jogadores(cookieID):
     try:
+        API_JAVA_HOST = os.getenv("API_JAVA_HOST", "localhost")
+        API_JAVA_PORT = os.getenv("API_JAVA_PORT", "8080")
+        url_api = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores/lote"
+        headers = {'Content-Type': 'application/json'}
+        
+        
         print(colored("\nDados de jogadores estao sendo coletados", "white"))    
         jogadores_json = montar_dados_jogadores(cookieID)
-        url_api = "http://localhost:8080/jogadores/lote"
-        headers = {'Content-Type': 'application/json'}
         
         
         print(colored("\nEnviando todos os dados para a API...", "white"))    
@@ -56,6 +65,7 @@ def atualizar_jogadores(cookieID):
             print(colored("Sucesso", "green"))
         else:
             print(colored("Falhou!", "red")) 
+        
         print(colored("Atualizando todos os dados da API...", "white"))
         response = requests.patch(url_api,data=jogadores_json, headers=headers)
         if (response.status_code==200):
