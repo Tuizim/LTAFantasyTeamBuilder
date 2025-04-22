@@ -3,6 +3,7 @@ package com.tuizim.LTAFantasyAPI.jogador.controller;
 import com.tuizim.LTAFantasyAPI.jogador.model.Jogador;
 import com.tuizim.LTAFantasyAPI.jogador.model.Rota;
 import com.tuizim.LTAFantasyAPI.jogador.service.JogadorService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class JogadorController {
             @RequestParam(defaultValue = "nickname") String sortBy,
             @RequestParam(defaultValue = "asc") String ordem )
     {
-        Sort sort = ordem.equalsIgnoreCase("disc")? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Sort sort = ordem.equalsIgnoreCase("desc")? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         List<Jogador> jogadores = jogadorService.getAllJogadores(sort);
         return ResponseEntity.ok(jogadores);
     }
@@ -30,12 +31,12 @@ public class JogadorController {
         return ResponseEntity.ok(jogadorService.getJogadorById(id));
     }
     @GetMapping("/rota/{rota}")
-    public ResponseEntity<List<Jogador>> getJogadorRota(@RequestParam Rota rota){
+    public ResponseEntity<List<Jogador>> getJogadorRota(@PathParam("rota") Rota rota){
         List<Jogador> jogadores = jogadorService.getJogadorByRota(rota);
         return ResponseEntity.ok(jogadores);
     }
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<Jogador> getJogadorNickname(@RequestParam String nickname){
+    public ResponseEntity<Jogador> getJogadorNickname(@PathParam("nickname") String nickname){
         return ResponseEntity.ok(jogadorService.getJogadorByNickname(nickname));
     }
 

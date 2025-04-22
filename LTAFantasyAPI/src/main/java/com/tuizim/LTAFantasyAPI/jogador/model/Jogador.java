@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "jogador")
+@Entity
 @Table(name = "jogador")
 @Data
 @NoArgsConstructor
@@ -26,25 +26,18 @@ public class Jogador {
     @Column
     private int jogos;
     @Column
-    @JsonDeserialize(using = PercentDoubleDeserializer.class)
     private double win_rate;
     @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double kda;
     @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double cs_minuto;
     @Column
-    @JsonDeserialize(using = PercentDoubleDeserializer.class)
     private double participa_abate;
     @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double media_ponto;
     @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double ultimo_ponto;
     @Column
-    @JsonDeserialize(using = StringToDoubleDeserializer.class)
     private double valor_atual;
 }
 
