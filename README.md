@@ -1,6 +1,6 @@
 # LTAFantasy
 
-Este é o projeto LTAFantasy, que inclui uma API desenvolvida em **Java** e **Python** para gerenciar e processar dados relacionados a jogadores. O projeto utiliza **Docker** para orquestrar os containers e também utiliza variáveis de ambiente e um ambiente virtual Python (venv) para facilitar o desenvolvimento.
+Este é o projeto LTAFantasy, que inclui serviços desenvolvidos em **Java** e **Python** para gerenciar e processar dados relacionados a jogadores. O projeto utiliza **Docker** para orquestrar os containers e também utiliza variáveis de ambiente e um ambiente virtual Python (venv) para facilitar o desenvolvimento.
 
 ## Índice
 
