@@ -1,6 +1,3 @@
-import time
-import sys
-
 def normalizar_float(valor):
     try:
         valor = float(valor)
