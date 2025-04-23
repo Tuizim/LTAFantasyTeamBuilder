@@ -1,6 +1,7 @@
 package com.tuizim.LTAFantasyAPI.jogador.repository;
 
 import com.tuizim.LTAFantasyAPI.jogador.model.Jogador;
+import com.tuizim.LTAFantasyAPI.jogador.model.Liga;
 import com.tuizim.LTAFantasyAPI.jogador.model.Rota;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,5 +11,7 @@ import java.util.Optional;
 public interface JogadorDAO extends JpaRepository<Jogador, Long> {
     Optional<Jogador> findByNickname(String nickname);
     List<Jogador> findByRota(Rota rota);
+    List<Jogador> findByLiga(Liga liga);
+    List<Jogador> findByRotaAndLiga(Rota rota, Liga liga);
     Boolean existsByNickname(String nickname);
 }
