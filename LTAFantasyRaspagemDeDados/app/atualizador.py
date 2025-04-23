@@ -41,7 +41,7 @@ def montar_dados_jogadores(cookieID):
                         media_ponto= jogador["media_pontos"],
                         ultimo_ponto= jogador["ultimo_ponto"],
                         valor_atual= jogador["valor_atual"],
-                        liga= jogador["liga"]
+                        liga= estatistica["liga"]
                     )
                     jogadores.append(jogador_obj.to_dict())
         jogadores_json = json.dumps(jogadores, indent=4, ensure_ascii=False)
