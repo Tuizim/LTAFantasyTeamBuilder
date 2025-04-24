@@ -1,8 +1,0 @@
-com/tuizim/LTAFantasyAPI/util/StringToDoubleDeserializer.class
-com/tuizim/LTAFantasyAPI/jogador/controller/JogadorController.class
-com/tuizim/LTAFantasyAPI/jogador/model/Rota.class
-com/tuizim/LTAFantasyAPI/jogador/repository/JogadorDAO.class
-com/tuizim/LTAFantasyAPI/jogador/service/JogadorService.class
-com/tuizim/LTAFantasyAPI/jogador/model/Jogador$JogadorBuilder.class
-com/tuizim/LTAFantasyAPI/LtaFantasyApiApplication.class
-com/tuizim/LTAFantasyAPI/jogador/model/Jogador.class

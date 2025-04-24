@@ -1,7 +1,0 @@
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/LtaFantasyApiApplication.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/jogador/controller/JogadorController.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/jogador/model/Jogador.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/jogador/model/Rota.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/jogador/repository/JogadorDAO.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/jogador/service/JogadorService.java
-/home/tuizim/projetos/LTAFantasyAPI/src/main/java/com/tuizim/LTAFantasyAPI/util/StringToDoubleDeserializer.java
