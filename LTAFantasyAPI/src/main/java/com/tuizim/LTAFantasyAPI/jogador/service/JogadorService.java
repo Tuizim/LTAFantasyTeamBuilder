@@ -1,14 +1,15 @@
 package com.tuizim.LTAFantasyAPI.jogador.service;
 
 import com.tuizim.LTAFantasyAPI.config.ErrorMessages;
+import com.tuizim.LTAFantasyAPI.config.SuccessMessages;
 import com.tuizim.LTAFantasyAPI.jogador.model.Jogador;
 import com.tuizim.LTAFantasyAPI.jogador.model.Liga;
 import com.tuizim.LTAFantasyAPI.jogador.model.Rota;
 import com.tuizim.LTAFantasyAPI.jogador.repository.JogadorDAO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,9 +18,9 @@ public class JogadorService {
 
     private final JogadorDAO jogadorDAO;
 
-    public List<Jogador> buscarTodosJogadores(Sort sort, Rota rota, Liga liga) {
+    public List<Jogador> buscarTodosJogadores(Rota rota, Liga liga) {
         if (liga == null && rota == null) {
-            return jogadorDAO.findAll(sort);
+            return jogadorDAO.findAll();
         }
         else if (liga == null && rota != null) {
             return jogadorDAO.findByRota(rota);
@@ -32,14 +33,56 @@ public class JogadorService {
         }
     }
 
-    public Jogador buscarJogador(long id, String nickname) {
-        if (id>0){
-            return jogadorDAO.findById(id).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_ID,id)));
-        }
-        else if (nickname !=null && !nickname.isBlank()) {
+    public Jogador buscarJogador(String nickname) {
+        if (nickname !=null && !nickname.isBlank()) {
             return jogadorDAO.findByNickname(nickname.toUpperCase()).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nickname)));
         }
         else throw new RuntimeException(ErrorMessages.JOGADOR_INVALID_PARAMS);
     }
 
+    public Jogador criarJogador(Jogador jogador) {
+        jogador.setId(0);
+        if (jogadorDAO.existsByNickname(jogador.getNickname())) {
+            throw new RuntimeException(ErrorMessages.JOGADOR_JUST_EXISTS);
+        }
+        return jogadorDAO.save(jogador);
+    }
+
+    public List<Jogador> criarJogadorLote(List<Jogador> jogadores) {
+        List<Jogador> jogadoresLote = new ArrayList<>();
+        for (Jogador jogador : jogadores) {
+            jogador.setId(0);
+            if (!jogadorDAO.existsByNickname(jogador.getNickname())) {
+                jogadoresLote.add(jogador);
+            }
+        }
+        return jogadorDAO.saveAll(jogadoresLote);
+    }
+
+    public Jogador atualizarJogador(Jogador jogador) {
+        Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElseThrow(()-> new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,jogador.getNickname())));
+        jogador.setId(jogadorToUpdate.getId());
+        return jogadorDAO.save(jogador);
+    }
+
+    public List<Jogador> atualizarJogadorLote(List<Jogador> jogadores) {
+        List<Jogador> jogadoresLote = new ArrayList<>();
+        for (Jogador jogador : jogadores) {
+            Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElse(null);
+            if (jogadorToUpdate != null) {
+                jogador.setId(jogadorToUpdate.getId());
+                jogadoresLote.add(jogador);
+            }
+        }
+        return jogadorDAO.saveAll(jogadoresLote);
+    }
+
+    public String deletarJogador(String nickname) {
+        if (!jogadorDAO.existsByNickname(nickname)) {
+            throw new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nickname));
+        }
+        Jogador jogador = jogadorDAO.findByNickname(nickname).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nickname)));
+        jogadorDAO.delete(jogador);
+        return SuccessMessages.JOGADOR_SUCCESS_DELETE;
+    }
 }

@@ -8,4 +8,6 @@ public final class ErrorMessages {
             "Jogador com nickname '%s' não encontrado";
     public static final String JOGADOR_INVALID_PARAMS =
             "É preciso informar id ou nickname";
+    public static final String JOGADOR_JUST_EXISTS =
+            "Jogador com este nickname já está cadastrado";
 }
