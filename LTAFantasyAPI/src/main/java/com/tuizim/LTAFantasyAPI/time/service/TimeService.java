@@ -45,29 +45,6 @@ public class TimeService {
                 .orElseThrow(() -> new RuntimeException(String.format(ErrorMessages.TIME_NOTFOUND_NOME, nome.toUpperCase())));
     }
 
-    public Time atualizarTime(Time time) {
-        time.setNome(time.getNome().toUpperCase());
-        Time timeSalvo = timeDAO.findByNome(time.getNome()).orElse(null);
-        if (timeSalvo == null) {
-            throw new RuntimeException(String.format(ErrorMessages.TIME_NOTFOUND_NOME, time.getNome().toUpperCase()));
-        }
-        timeSalvo.setId(time.getId());
-        return timeDAO.save(timeSalvo);
-    }
-
-    public List<Time> atualizarTimeLote(List<Time> times) {
-        List<Time> timeLote = new ArrayList<>();
-        for (Time time : times) {
-            time.setNome(time.getNome().toUpperCase());
-            Time timeSalvo = timeDAO.findByNome(time.getNome()).orElse(null);
-            if (timeSalvo != null) {
-                time.setId(timeSalvo.getId());
-                timeLote.add(timeSalvo);
-            }
-        }
-        return timeDAO.saveAll(timeLote);
-    }
-
     public String deletarTime(String nome) {
         String nomeFormatado = nome.toUpperCase();
         if (!timeDAO.existsByNome(nomeFormatado)) {
