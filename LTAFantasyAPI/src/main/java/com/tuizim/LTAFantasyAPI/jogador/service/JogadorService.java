@@ -41,6 +41,7 @@ public class JogadorService {
     }
 
     public Jogador criarJogador(Jogador jogador) {
+        jogador.setNickname(jogador.getNickname().toUpperCase());
         jogador.setId(0);
         if (jogadorDAO.existsByNickname(jogador.getNickname())) {
             throw new RuntimeException(ErrorMessages.JOGADOR_JUST_EXISTS);
@@ -51,6 +52,7 @@ public class JogadorService {
     public List<Jogador> criarJogadorLote(List<Jogador> jogadores) {
         List<Jogador> jogadoresLote = new ArrayList<>();
         for (Jogador jogador : jogadores) {
+            jogador.setNickname(jogador.getNickname().toUpperCase());
             jogador.setId(0);
             if (!jogadorDAO.existsByNickname(jogador.getNickname())) {
                 jogadoresLote.add(jogador);
@@ -60,6 +62,7 @@ public class JogadorService {
     }
 
     public Jogador atualizarJogador(Jogador jogador) {
+        jogador.setNickname(jogador.getNickname().toUpperCase());
         Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElseThrow(()-> new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,jogador.getNickname())));
         jogador.setId(jogadorToUpdate.getId());
         return jogadorDAO.save(jogador);
@@ -68,6 +71,7 @@ public class JogadorService {
     public List<Jogador> atualizarJogadorLote(List<Jogador> jogadores) {
         List<Jogador> jogadoresLote = new ArrayList<>();
         for (Jogador jogador : jogadores) {
+            jogador.setNickname(jogador.getNickname().toUpperCase());
             Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElse(null);
             if (jogadorToUpdate != null) {
                 jogador.setId(jogadorToUpdate.getId());
@@ -78,10 +82,11 @@ public class JogadorService {
     }
 
     public String deletarJogador(String nickname) {
-        if (!jogadorDAO.existsByNickname(nickname)) {
-            throw new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nickname));
+        String nicknameFormated = nickname.toUpperCase();
+        if (!jogadorDAO.existsByNickname(nicknameFormated)) {
+            throw new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nicknameFormated));
         }
-        Jogador jogador = jogadorDAO.findByNickname(nickname).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nickname)));
+        Jogador jogador = jogadorDAO.findByNickname(nicknameFormated).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nicknameFormated)));
         jogadorDAO.delete(jogador);
         return SuccessMessages.JOGADOR_SUCCESS_DELETE;
     }
