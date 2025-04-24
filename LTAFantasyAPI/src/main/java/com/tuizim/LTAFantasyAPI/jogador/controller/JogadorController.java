@@ -1,11 +1,11 @@
 package com.tuizim.LTAFantasyAPI.jogador.controller;
 
 import com.tuizim.LTAFantasyAPI.jogador.model.Jogador;
+import com.tuizim.LTAFantasyAPI.jogador.model.Liga;
 import com.tuizim.LTAFantasyAPI.jogador.model.Rota;
 import com.tuizim.LTAFantasyAPI.jogador.service.JogadorService;
-import jakarta.websocket.server.PathParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,42 +14,33 @@ import java.util.List;
 @RequestMapping("jogadores")
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Jogadores", description = "CRUD e buscas individuais de jogadores")
 public class JogadorController {
     private final JogadorService jogadorService;
 
     @GetMapping()
-    public ResponseEntity<List<Jogador>> listarT(
-            @RequestParam(defaultValue = "nickname") String sortBy,
-            @RequestParam(defaultValue = "asc") String ordem )
-    {
-        Sort sort = ordem.equalsIgnoreCase("desc")? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        List<Jogador> jogadores = jogadorService.getAllJogadores(sort);
+    public ResponseEntity<List<Jogador>> buscarJogadores(@RequestParam(required = false) Rota rota, @RequestParam(required = false) Liga liga) {
+        List<Jogador> jogadores = jogadorService.buscarTodosJogadores(rota, liga);
         return ResponseEntity.ok(jogadores);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Jogador> getJogador(@RequestParam Long id){
-        return ResponseEntity.ok(jogadorService.getJogadorById(id));
-    }
-    @GetMapping("/rota/{rota}")
-    public ResponseEntity<List<Jogador>> getJogadorRota(@PathParam("rota") Rota rota){
-        List<Jogador> jogadores = jogadorService.getJogadorByRota(rota);
-        return ResponseEntity.ok(jogadores);
-    }
-    @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<Jogador> getJogadorNickname(@PathParam("nickname") String nickname){
-        return ResponseEntity.ok(jogadorService.getJogadorByNickname(nickname));
+
+    @GetMapping("/{nickname}")
+    public ResponseEntity<Jogador> buscarJogadorPorId(@PathVariable String nickname){
+        return ResponseEntity.ok(jogadorService.buscarJogador(nickname));
     }
 
     @PostMapping
-    public ResponseEntity<Jogador> postJogador(@RequestBody Jogador jogador){
-        return ResponseEntity.ok(jogadorService.createJogador(jogador));
+    public ResponseEntity<Jogador> salvarJogador(@RequestBody Jogador jogador){
+        return ResponseEntity.ok(jogadorService.criarJogador(jogador));
     }
-    @PostMapping("/lote")
-    public ResponseEntity<List<Jogador>> postJogador(@RequestBody List<Jogador> jogador){
-        return ResponseEntity.ok(jogadorService.createJogadores(jogador));
+
+    @PutMapping()
+    public ResponseEntity<Jogador> atualizarJogador(@RequestBody Jogador jogador){
+        return ResponseEntity.ok(jogadorService.atualizarJogador(jogador));
     }
-    @PatchMapping("/lote")
-    public ResponseEntity<List<Jogador>> updateJogadores(@RequestBody List<Jogador> jogadores){
-        return ResponseEntity.ok(jogadorService.updateJogadoresInLoteByNickname(jogadores));
+
+    @DeleteMapping()
+    public ResponseEntity<String> excluirJogador(@RequestParam String nickname){
+        return ResponseEntity.ok(jogadorService.deletarJogador(nickname));
     }
 }

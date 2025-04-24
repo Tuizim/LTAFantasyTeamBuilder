@@ -1,8 +1,6 @@
 package com.tuizim.LTAFantasyAPI.jogador.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.tuizim.LTAFantasyAPI.util.PercentDoubleDeserializer;
-import com.tuizim.LTAFantasyAPI.util.StringToDoubleDeserializer;
+import com.tuizim.LTAFantasyAPI.time.model.Time;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +32,7 @@ public class Jogador {
     @Column
     private double participa_abate;
     @Column
-    private double media_ponto;
+    private double media_pontos;
     @Column
     private double ultimo_ponto;
     @Column
@@ -42,5 +40,10 @@ public class Jogador {
     @Column
     @Enumerated(EnumType.STRING)
     private Liga liga;
+    @Column
+    private double flutuacao_mercado;
+    @ManyToOne
+    @JoinColumn(name = "id_time")
+    private Time time;
 }
 
