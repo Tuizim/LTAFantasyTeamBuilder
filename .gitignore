@@ -37,13 +37,13 @@ htmlcov/
 docker-compose.override.yml
 
 # 📁 Java (Apijava/)
-LTAFantasyAPI/target/
-LTAFantasyAPI/.classpath
-LTAFantasyAPI/project
-LTAFantasyAPI/settings/
-LTAFantasyAPI/iml
-LTAFantasyAPI/.gradle/
-LTAFantasyAPI/build/
+/LTAFantasyAPI/target/
+/LTAFantasyAPI/.classpath
+/LTAFantasyAPI/project
+/LTAFantasyAPI/settings/
+/LTAFantasyAPI/iml
+/LTAFantasyAPI/.gradle/
+/LTAFantasyAPI/build/
 *.jar
 *.war
 *.ear
