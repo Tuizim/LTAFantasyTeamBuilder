@@ -25,7 +25,7 @@ public class JogadorController {
     }
 
     @GetMapping("/{nickname}")
-    public ResponseEntity<Jogador> buscarJogadorPorId(@PathVariable String nickname){
+    public ResponseEntity<Jogador> buscarJogadorPorNickname(@PathVariable String nickname){
         return ResponseEntity.ok(jogadorService.buscarJogador(nickname));
     }
 
