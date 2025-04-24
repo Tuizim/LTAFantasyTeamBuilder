@@ -27,7 +27,7 @@ public class Confronto {
     private Time time2;
 
     @Column
-    private LocalDate date;
+    private LocalDate data_confronto;
 
     @ManyToOne
     @JoinColumn(name = "id_time_vitorioso")
