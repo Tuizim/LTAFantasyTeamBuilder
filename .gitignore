@@ -44,6 +44,7 @@ docker-compose.override.yml
 /LTAFantasyAPI/iml
 /LTAFantasyAPI/.gradle/
 /LTAFantasyAPI/build/
+/LTAFantasyAPI/src/main/resources/application.yml
 *.jar
 *.war
 *.ear
@@ -60,4 +61,3 @@ coverage/
 # Sistema operacional
 .DS_Store
 Thumbs.db
-LTAFantasyAPI/src/main/resources/application.yml
