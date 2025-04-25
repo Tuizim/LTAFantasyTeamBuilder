@@ -60,3 +60,4 @@ coverage/
 # Sistema operacional
 .DS_Store
 Thumbs.db
+LTAFantasyAPI/src/main/resources/application.yml
