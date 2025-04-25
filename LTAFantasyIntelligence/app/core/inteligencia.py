@@ -3,7 +3,7 @@ from app.core.classes.resultado_time import ResultadoTime
 from app.core.classes.jogadores_por_rota import JogadoresPorRota
 
 def encontrar_melhor_time(rotas:JogadoresPorRota,orcamento) -> ResultadoTime:
-    jogadores_por_rota = [rotas.get_jogadores(rota) for rota in rotas.get_rotas()]
+    jogadores_por_rota = [rotas.get_jogadores_rota(rota) for rota in rotas.get_rotas()]
     todas_combinacoes = itertools.product(*jogadores_por_rota)
     
     melhor_time = None

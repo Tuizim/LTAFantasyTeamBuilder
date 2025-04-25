@@ -14,7 +14,7 @@ class JogadoresPorRota:
             raise ValueError(f"Rota inválida: {rota}")
         self.rotas[jogador.rota].append(jogador)
     
-    def get_jogadores(self, rota):
+    def get_jogadores_rota(self, rota):
         return self.rotas.get(rota, [])
     
     def get_rotas(self):

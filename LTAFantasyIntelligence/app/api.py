@@ -44,6 +44,7 @@ def trazer_dados_api():
 def gerar_time(orcamento: float=50):
 
     jogador_por_rota = trazer_dados_api()
+    AvaliadorDeJogador.ajustar_score_jogadores(jogador_por_rota)
     
     resultado = encontrar_melhor_time(jogador_por_rota,orcamento)
     return {
@@ -65,5 +66,6 @@ def gerar_time(orcamento: float=50):
 @app.get("/melhores-jogadores-por-rota")
 def gerar_lista_jogadores():
     jogador_por_rota = trazer_dados_api()
+    AvaliadorDeJogador.ajustar_score_jogadores(jogador_por_rota)
     jogador_por_rota.ordernar_por_score()
     return jogador_por_rota
