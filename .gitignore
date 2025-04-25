@@ -44,7 +44,6 @@ docker-compose.override.yml
 /LTAFantasyAPI/iml
 /LTAFantasyAPI/.gradle/
 /LTAFantasyAPI/build/
-/LTAFantasyAPI/src/main/resources/application.yml
 *.jar
 *.war
 *.ear
