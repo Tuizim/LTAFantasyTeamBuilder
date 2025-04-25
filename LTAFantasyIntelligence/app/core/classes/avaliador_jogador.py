@@ -3,11 +3,11 @@ from app.core.classes.jogadores_por_rota import JogadoresPorRota
 class AvaliadorDeJogador:
     def __init__(self):
         self.atributo_pesos = {
-            "kda": 0.50,
-            "cs_minuto": 0.05,
-            "participa_abate": 0.10,
+            "kda": 0.40,
+            "cs_minuto": 0.10,
+            "participa_abate": 0.20,
             "win_rate": 0.10,
-            "media_pontos": 0.30
+            "media_pontos": 0.20
         }
         self.faixa_conservadora = {
             "kda":{"min":2.0 , "max":10.0},
@@ -16,8 +16,7 @@ class AvaliadorDeJogador:
             "win_rate":{"min":0 , "max":85},
             "media_pontos":{"min":0.0 , "max":25.0}
         }
-    
-    
+     
     def calcular_score(self, jogador:Player):
         def normalizar(valor,minimo,maximo):
             return (valor-minimo) / (maximo-minimo)
