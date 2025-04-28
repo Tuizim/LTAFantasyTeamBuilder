@@ -10,7 +10,7 @@ class Jogador(BaseModel):
     kda: float = Field(default=0.0, description="Kill/Death/Assist ratio")
     cs_minuto: float = Field(default=0.0, description="Farm por minuto")
     participa_abate: float = Field(default=0.0, description="Participação em abates (%)")
-    media_ponto: float = Field(default=0.0, description="Média de pontos")
+    media_pontos: float = Field(default=0.0, description="Média de pontos")
     ultimo_ponto: float = Field(default=0.0, description="Última pontuação obtida")
     valor_atual: float = Field(default=0.0, description="Valor de mercado atual")
     liga: str

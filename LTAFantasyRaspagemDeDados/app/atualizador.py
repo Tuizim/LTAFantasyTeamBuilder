@@ -38,7 +38,7 @@ def montar_dados_jogadores(cookieID):
                         kda= estatistica["kda"],
                         cs_minuto= estatistica["cs_minuto"],
                         participa_abate= estatistica["participa_abate"],
-                        media_ponto= jogador["media_pontos"],
+                        media_pontos= jogador["media_pontos"],
                         ultimo_ponto= jogador["ultimo_ponto"],
                         valor_atual= jogador["valor_atual"],
                         liga= estatistica["liga"]
@@ -75,7 +75,7 @@ def atualizar_jogadores(cookieID):
         
         logs.etapas(logs.enums.Etapa.AtualizandoDadosDaApi)  
         try:
-            response = requests.patch(url_api,data=jogadores_json, headers=headers)
+            response = requests.put(url_api,data=jogadores_json, headers=headers)
             if (response.status_code==200):
                 logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
             else:
