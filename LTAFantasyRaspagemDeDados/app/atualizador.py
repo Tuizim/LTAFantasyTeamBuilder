@@ -1,6 +1,6 @@
 from app.Extrair.extrairDadosFantasy import extrair_dados_fantasy
 from app.Extrair.extrairDadosJogadoresSul import extrair_dados
-from app.Models.jogador_model import Jogador
+from app.Models.jogador_model import Jogador,Time
 import app.Comum.logs as logs
 import json
 from termcolor import colored
@@ -41,7 +41,8 @@ def montar_dados_jogadores(cookieID):
                         media_pontos= jogador["media_pontos"],
                         ultimo_ponto= jogador["ultimo_ponto"],
                         valor_atual= jogador["valor_atual"],
-                        liga= estatistica["liga"]
+                        liga= estatistica["liga"],
+                        time= Time(nome= estatistica["time"])
                     )
                     jogadores.append(jogador_obj.to_dict())
         jogadores_json = json.dumps(jogadores, indent=4, ensure_ascii=False)
