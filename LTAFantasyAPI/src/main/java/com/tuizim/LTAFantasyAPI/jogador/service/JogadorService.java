@@ -6,6 +6,8 @@ import com.tuizim.LTAFantasyAPI.jogador.model.Jogador;
 import com.tuizim.LTAFantasyAPI.jogador.model.Liga;
 import com.tuizim.LTAFantasyAPI.jogador.model.Rota;
 import com.tuizim.LTAFantasyAPI.jogador.repository.JogadorDAO;
+import com.tuizim.LTAFantasyAPI.time.model.Time;
+import com.tuizim.LTAFantasyAPI.time.repository.TimeDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class JogadorService {
 
     private final JogadorDAO jogadorDAO;
+    private final TimeDAO timeDAO;
 
     public List<Jogador> buscarTodosJogadores(Rota rota, Liga liga) {
         if (liga == null && rota == null) {
@@ -46,6 +49,9 @@ public class JogadorService {
         if (jogadorDAO.existsByNickname(jogador.getNickname())) {
             throw new RuntimeException(ErrorMessages.JOGADOR_JUST_EXISTS);
         }
+        if (jogador.getTime()!=null) {
+            jogador.setTime(validarTimeJogador(jogador.getTime()));
+        }
         return jogadorDAO.save(jogador);
     }
 
@@ -54,6 +60,9 @@ public class JogadorService {
         for (Jogador jogador : jogadores) {
             jogador.setNickname(jogador.getNickname().toUpperCase());
             jogador.setId(0);
+            if (jogador.getTime()!=null) {
+                jogador.setTime(validarTimeJogador(jogador.getTime()));
+            }
             if (!jogadorDAO.existsByNickname(jogador.getNickname())) {
                 jogadoresLote.add(jogador);
             }
@@ -65,6 +74,9 @@ public class JogadorService {
         jogador.setNickname(jogador.getNickname().toUpperCase());
         Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElseThrow(()-> new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,jogador.getNickname())));
         jogador.setId(jogadorToUpdate.getId());
+        if (jogador.getTime()!=null) {
+            jogador.setTime(validarTimeJogador(jogador.getTime()));
+        }
         return jogadorDAO.save(jogador);
     }
 
@@ -73,6 +85,9 @@ public class JogadorService {
         for (Jogador jogador : jogadores) {
             jogador.setNickname(jogador.getNickname().toUpperCase());
             Jogador jogadorToUpdate = jogadorDAO.findByNickname(jogador.getNickname()).orElse(null);
+            if (jogador.getTime()!=null) {
+                jogador.setTime(validarTimeJogador(jogador.getTime()));
+            }
             if (jogadorToUpdate != null) {
                 jogador.setId(jogadorToUpdate.getId());
                 jogadoresLote.add(jogador);
@@ -89,5 +104,9 @@ public class JogadorService {
         Jogador jogador = jogadorDAO.findByNickname(nicknameFormated).orElseThrow(()->new RuntimeException(String.format(ErrorMessages.JOGADOR_NOTFOUND_NICKNAME,nicknameFormated)));
         jogadorDAO.delete(jogador);
         return SuccessMessages.JOGADOR_SUCCESS_DELETE;
+    }
+
+    public Time validarTimeJogador(Time time) {
+        return timeDAO.findByNome(time.getNome()).orElse(null);
     }
 }
