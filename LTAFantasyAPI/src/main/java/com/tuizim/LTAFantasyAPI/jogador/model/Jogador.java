@@ -26,13 +26,19 @@ public class Jogador {
     @Column
     private double win_rate;
     @Column
-    private double kda;
-    @Column
     private double cs_minuto;
     @Column
     private double participa_abate;
     @Column
     private double media_pontos;
+    @Column
+    private double kda;
+    @Column
+    private double kill_rate;
+    @Column
+    private double death_rate;
+    @Column
+    private double assist_rate;
     @Column
     private double ultimo_ponto;
     @Column
