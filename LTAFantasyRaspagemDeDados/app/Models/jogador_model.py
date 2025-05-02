@@ -10,6 +10,9 @@ class Jogador(BaseModel):
     jogos: int = Field(default=0, description="Número de jogos")
     win_rate: float = Field(default=0.0, description="Taxa de vitórias (%)")
     kda: float = Field(default=0.0, description="Kill/Death/Assist ratio")
+    kill_rate: float = Field(default=0.0, description="Kill rate")
+    death_rate:float = Field(default=0.0, description="Death rate")
+    assist_rate:float = Field(default=0.0, description="Assist rate")
     cs_minuto: float = Field(default=0.0, description="Farm por minuto")
     participa_abate: float = Field(default=0.0, description="Participação em abates (%)")
     media_pontos: float = Field(default=0.0, description="Média de pontos")
@@ -17,6 +20,7 @@ class Jogador(BaseModel):
     valor_atual: float = Field(default=0.0, description="Valor de mercado atual")
     liga: str = Field(..., description="Liga do jogador")
     time: Optional[Time] = Field(None, description="Time do jogador")
+    
     
     def to_dict(self):
         return self.dict()
