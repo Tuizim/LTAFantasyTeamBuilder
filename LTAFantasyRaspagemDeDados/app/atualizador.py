@@ -1,12 +1,35 @@
 from app.Extrair.extrairDadosFantasy import extrair_dados_fantasy
-from app.Extrair.extrairDadosJogadoresSul import extrair_dados
-from app.Models.jogador_model import Jogador
+from app.Extrair.extrairDadosJogadoresLiga import extrair_dados
+from app.Models.jogador_model import Jogador,Time
 import app.Comum.logs as logs
 import json
 from termcolor import colored
 import requests
 import os
 import sys
+
+def extrai_jogador_fantasy(jogador):
+    return {
+        "nickname": jogador["nickname"].upper(),
+        "rota": jogador["rota"].upper(),
+        "media_pontos": jogador["media_pontos"],
+        "ultimo_ponto": jogador["ultimo_ponto"],
+        "valor_atual": jogador["valor_atual"]
+    }
+
+def extrai_jogador_estatisticas(estatisticas):
+    return {
+        "jogos": estatisticas["jogos"],
+        "win_rate": estatisticas["win_rate"],
+        "kda": estatisticas["kda"],
+        "kill_rate": estatisticas["kill_rate"],
+        "death_rate": estatisticas["death_rate"],
+        "assist_rate": estatisticas["assist_rate"],
+        "cs_minuto": estatisticas["cs_minuto"],
+        "participa_abate": estatisticas["participa_abate"],
+        "liga": estatisticas["liga"],
+        "time": Time(nome=estatisticas["time"])
+    }
 
 def montar_dados_jogadores(cookieID):
     try:        
@@ -31,17 +54,8 @@ def montar_dados_jogadores(cookieID):
             for estatistica in dadosLtaSul:
                 if estatistica["nickname"].upper() == jogador["nickname"].upper():
                     jogador_obj = Jogador(
-                        nickname= jogador["nickname"].upper(),
-                        rota= jogador["rota"].upper(),
-                        jogos= estatistica["jogos"],
-                        win_rate= estatistica["win_rate"],
-                        kda= estatistica["kda"],
-                        cs_minuto= estatistica["cs_minuto"],
-                        participa_abate= estatistica["participa_abate"],
-                        media_pontos= jogador["media_pontos"],
-                        ultimo_ponto= jogador["ultimo_ponto"],
-                        valor_atual= jogador["valor_atual"],
-                        liga= estatistica["liga"]
+                        **extrai_jogador_estatisticas(estatisticas=estatistica),
+                        **extrai_jogador_fantasy(jogador=jogador)
                     )
                     jogadores.append(jogador_obj.to_dict())
         jogadores_json = json.dumps(jogadores, indent=4, ensure_ascii=False)
