@@ -10,6 +10,9 @@ def extrair_dados_por_liga(liga,endpoint_liga):
             "jogos":"td:nth-child(3)",
             "win_rate":"td:nth-child(6)",
             "kda":"td:nth-child(10)",
+            "kill_rate":"td:nth-child(7)",
+            "death_rate":"td:nth-child(8)",
+            "assist_rate":"td:nth-child(9)",
             "cs_minuto":"td:nth-child(12)",
             "participa_abate":"td:nth-child(17)"
         }
@@ -32,6 +35,10 @@ def extrair_dados_por_liga(liga,endpoint_liga):
                 jogos = linha.locator(html["jogos"]).inner_text()
                 win_rate = linha.locator(html["win_rate"]).inner_text()
                 kda = linha.locator(html["kda"]).inner_text()
+                kill_rate = linha.locator(html["kill_rate"]).inner_text()
+                death_rate = linha.locator(html["death_rate"]).inner_text()
+                assist_rate = linha.locator(html["assist_rate"]).inner_text()
+                
                 cs_minuto = linha.locator(html["cs_minuto"]).inner_text()
                 participa_abate = linha.locator(html["participa_abate"]).inner_text()
                 
@@ -42,6 +49,9 @@ def extrair_dados_por_liga(liga,endpoint_liga):
                     "jogos":util.normalizar_int(jogos),
                     "win_rate":util.normalizar_porc(win_rate),
                     "kda":util.normalizar_float(kda),
+                    "kill_rate":util.normalizar_float(kill_rate),
+                    "death_rate":util.normalizar_float(death_rate),
+                    "assist_rate":util.normalizar_float(assist_rate),
                     "cs_minuto": util.normalizar_float(cs_minuto),
                     "participa_abate":util.normalizar_porc(participa_abate),
                     "liga":liga
