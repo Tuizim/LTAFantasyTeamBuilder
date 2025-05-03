@@ -1,9 +1,11 @@
 from app.Extrair.extrairDadosFantasy import extrair_dados_fantasy
 from app.Extrair.extrairDadosJogadoresLiga import extrair_dados
-from app.Models.jogador_model import Jogador,Time
+from app.Extrair.extrairDadosTime import extrair_dados_fantasy_time
+from app.Models.jogador_model import Jogador
+from app.Models.times import Time
 import app.Comum.logs as logs
+from app.Comum.util import normalizar_texto
 import json
-from termcolor import colored
 import requests
 import os
 import sys
@@ -73,7 +75,7 @@ def atualizar_jogadores(cookieID):
         url_api = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores/lote"
         headers = {'Content-Type': 'application/json'}
         
-        logs.etapas(logs.enums.Etapa.IniciandoColeta)
+        logs.etapas(logs.enums.Etapa.IniciandoColetaJogadores)
         jogadores_json = montar_dados_jogadores(cookieID)
         
         
@@ -100,5 +102,50 @@ def atualizar_jogadores(cookieID):
     except RuntimeError as e:
         logs.respostas_falha(logs.enums.RespostaFalha.Erro)
         print(e)
+
+def montar_times(cookieId):
+    try:
+        logs.etapas(logs.enums.Etapa.ColetandoTimes)
+        nome_times = extrair_dados_fantasy_time(cookieid=cookieId)
+        if (nome_times==None):
+            logs.respostas_falha(logs.enums.RespostaFalha)
+            sys.exit()
+        elif (len(nome_times)==0):
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
+            sys.exit()
+        else:
+            logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
+        times=[]
+        for time in nome_times:
+            time = normalizar_texto(time)
+            time_obj = Time(nome=time)
+            times.append(time_obj.to_dict())
+        return json.dumps(times, indent=4, ensure_ascii=False)
     
-    
+    except RuntimeError as e:
+        logs.respostas_falha(logs.enums.RespostaFalha.Erro)
+        print(e)
+            
+def atualizar_times(cookieID):
+    try:
+        API_JAVA_HOST = os.getenv("API_JAVA_HOST", "localhost")
+        API_JAVA_PORT = os.getenv("API_JAVA_PORT", "8080")
+        url_api = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/times/lote"
+        headers = {'Content-Type': 'application/json'}
+        
+        logs.etapas(logs.enums.Etapa.IniciandoColetaTimes)
+        json_times = montar_times(cookieID)
+        
+        logs.etapas(logs.enums.Etapa.EnviandoParaApi)  
+        try: 
+            response = requests.post(url_api,data=json_times,headers=headers)
+            if (response.status_code==200):
+                logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
+            else:
+                logs.respostas_falha(logs.enums.RespostaFalha.Falhou) 
+        except:
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
+        
+    except RuntimeError as e:
+        logs.respostas_falha(logs.enums.RespostaFalha.Erro)
+        print(e)

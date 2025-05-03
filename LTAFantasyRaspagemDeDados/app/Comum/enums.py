@@ -1,12 +1,14 @@
 from enum import Enum
 
 class Etapa(Enum):
-    IniciandoColeta = "Dados de jogadores estao sendo coletados"
+    IniciandoColetaJogadores = "Dados de jogadores estao sendo coletados"
+    IniciandoColetaTimes = "Dados dos times estao sendo coletados"
     ExtraindoDadosFantasy = "Coletando dados do fantasy..."
     ExtraindoDadosLiga = "Coletando estatisticas da liga..."
     MontandoObjeto = "Montando objetos..."
     EnviandoParaApi = "Enviando todos os dados para a API..."
     AtualizandoDadosDaApi = "Atualizando todos os dados da API..."
+    ColetandoTimes = "Coletando nome das equipes..."
     
 class RespostaFalha(Enum):
     Erro = "Erro!"

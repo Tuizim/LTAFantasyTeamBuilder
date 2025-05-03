@@ -25,11 +25,10 @@ def extrair_dados_fantasy(cookieid):
             "flutuacao": "div.flex.text-sm.items-center.font-kurdis.text-right.justify-end span.font-red-hat-display-semi-bold"
         }
         jogadores =[]
-        sucess = False
         tentativas = 3
         for tentativa in range(tentativas):
             with sync_playwright() as p:
-                browser = p.chromium.launch(headless=True)
+                browser = p.chromium.launch(headless=False)
                 context = browser.new_context()
                 context.add_cookies(cookies)
                 page = context.new_page()
@@ -59,18 +58,16 @@ def extrair_dados_fantasy(cookieid):
                                 "flutuacao_mercado":util.normalizar_float(flutuacao)
                             }
                         )
-                    sucess=True
                     browser.close()
                     break
                 except:
                     if (tentativa == tentativas-1):
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
-                        jogadores = []
                         break
                     else:
                         logs.respostas_time_out(logs.enums.timeOut.timeOut)
                         continue
-        return jogadores if sucess==True else []
+        return jogadores
             
     except RuntimeError as e:
         print(f"Caught: {e}")

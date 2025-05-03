@@ -1,8 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-
-class Time(BaseModel):
-    nome: str = Field(..., description="Nome do time")
+from app.Models.times import Time
     
 class Jogador(BaseModel):
     nickname: str = Field(..., unique=True, min_length=1, description="Apelido do jogador")
@@ -20,7 +18,6 @@ class Jogador(BaseModel):
     valor_atual: float = Field(default=0.0, description="Valor de mercado atual")
     liga: str = Field(..., description="Liga do jogador")
     time: Optional[Time] = Field(None, description="Time do jogador")
-    
     
     def to_dict(self):
         return self.dict()
