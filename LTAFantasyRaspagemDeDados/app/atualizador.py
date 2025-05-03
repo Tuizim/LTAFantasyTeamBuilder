@@ -20,6 +20,15 @@ def extrai_jogador_fantasy(jogador):
     }
 
 def extrai_jogador_estatisticas(estatisticas):
+    time_nome = normalizar_texto(estatisticas["time"])
+    de_para = {
+        "RED CANIDS":"RED KALUNGA",
+        "TEAM LIQUID":"TEAM LIQUID HONDA",
+        "CLOUD9":"CLOUD9 KIA",
+        "LYON 2024 AMERICAN TEAM":"LYON",
+        "LEVIATAN":"LEVIATAN ESPORTS"
+    }
+    time= de_para.get(time_nome,time_nome)
     return {
         "jogos": estatisticas["jogos"],
         "win_rate": estatisticas["win_rate"],
@@ -30,7 +39,7 @@ def extrai_jogador_estatisticas(estatisticas):
         "cs_minuto": estatisticas["cs_minuto"],
         "participa_abate": estatisticas["participa_abate"],
         "liga": estatisticas["liga"],
-        "time": Time(nome=estatisticas["time"])
+        "time": Time(nome=time)
     }
 
 def montar_dados_jogadores(cookieID):
