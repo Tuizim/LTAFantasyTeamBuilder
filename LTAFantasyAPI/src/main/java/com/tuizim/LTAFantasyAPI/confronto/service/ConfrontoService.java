@@ -9,6 +9,7 @@ import com.tuizim.LTAFantasyAPI.time.repository.TimeDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,6 +43,16 @@ public class ConfrontoService {
             throw new RuntimeException(ErrorMessages.CONFRONTO_JUST_EXISTS);
         }
         return confrontoDAO.save(confrontoTratado);
+    }
+    public List<Confronto> criarConfrontoLote(List<Confronto> confrontos) {
+        List<Confronto> newConfrontos = new ArrayList<>();
+        for (Confronto confronto : confrontos) {
+            Confronto confrontoTratado = tratarConfronto(confronto);
+            if (!confrontoDAO.existsByTimesEitherOrderAndData(confrontoTratado.getId(),confrontoTratado.getId(),confrontoTratado.getData_confronto())){
+                newConfrontos.add(confrontoTratado);
+            }
+        }
+        return confrontoDAO.saveAll(newConfrontos);
     }
 
     public String apagarConfronto(Confronto confronto) {

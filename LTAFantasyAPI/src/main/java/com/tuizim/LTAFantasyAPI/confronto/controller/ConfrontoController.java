@@ -17,6 +17,10 @@ public class ConfrontoController {
     public ResponseEntity<Confronto> criarConfronto(@RequestBody Confronto confronto){
         return ResponseEntity.ok(confrontoService.criarConfronto(confronto));
     }
+    @PostMapping("/lote")
+    public ResponseEntity<List<Confronto>> criarConfrontoLote(@RequestBody List<Confronto> confrontos){
+        return ResponseEntity.ok(confrontoService.criarConfrontoLote(confrontos));
+    }
 
     @DeleteMapping()
     public ResponseEntity<String> deletarConfronto(@RequestBody Confronto confronto){
