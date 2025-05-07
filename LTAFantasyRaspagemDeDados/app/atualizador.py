@@ -1,8 +1,9 @@
 from app.Extrair.extrairDadosFantasy import extrair_dados_fantasy
 from app.Extrair.extrairDadosJogadoresLiga import extrair_dados
 from app.Extrair.extrairDadosTime import extrair_dados_fantasy_time
+from app.Extrair.extrairDadosConfrontos import extrair_dados_fantasy_confrontos
 from app.Models.jogador_model import Jogador
-from app.Models.times import Time
+from app.Models.times import Time,Confronto
 import app.Comum.logs as logs
 from app.Comum.util import normalizar_texto
 import json
@@ -148,6 +149,45 @@ def atualizar_times(cookieID):
         logs.etapas(logs.enums.Etapa.EnviandoParaApi)  
         try: 
             response = requests.post(url_api,data=json_times,headers=headers)
+            if (response.status_code==200):
+                logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
+            else:
+                logs.respostas_falha(logs.enums.RespostaFalha.Falhou) 
+        except:
+            logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
+        
+    except RuntimeError as e:
+        logs.respostas_falha(logs.enums.RespostaFalha.Erro)
+        print(e)
+
+def montar_confrontos(cookieId):
+    confrontos = extrair_dados_fantasy_confrontos(cookieid=cookieId)
+    if (confrontos==None):
+        logs.respostas_falha(logs.enums.RespostaFalha)
+        sys.exit()
+    elif (len(confrontos)==0):
+        logs.respostas_falha(logs.enums.RespostaFalha.Conexao)
+        sys.exit()
+    else:
+        logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
+    confrontos_json=[]
+    for confronto in confrontos:
+        confrontos_json.append(confronto.to_dict())
+    return json.dumps(confrontos_json, indent=4, ensure_ascii=False)
+
+def atualizar_confrontos(cookieID):
+    try:
+        API_JAVA_HOST = os.getenv("API_JAVA_HOST", "localhost")
+        API_JAVA_PORT = os.getenv("API_JAVA_PORT", "8080")
+        url_api = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/confrontos/lote"
+        headers = {'Content-Type': 'application/json'}
+        
+        logs.etapas(logs.enums.Etapa.IniciandoColetaConfrontos)
+        json_confrontos = montar_confrontos(cookieID)
+        
+        logs.etapas(logs.enums.Etapa.EnviandoParaApi)  
+        try: 
+            response = requests.post(url_api,data=json_confrontos,headers=headers)
             if (response.status_code==200):
                 logs.respostas_sucesso(logs.enums.RespostaSucesso.Sucesso)
             else:

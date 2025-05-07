@@ -3,6 +3,7 @@ from enum import Enum
 class Etapa(Enum):
     IniciandoColetaJogadores = "Dados de jogadores estao sendo coletados"
     IniciandoColetaTimes = "Dados dos times estao sendo coletados"
+    IniciandoColetaConfrontos = "Dados dos confrontos estao sendo coletados"
     ExtraindoDadosFantasy = "Coletando dados do fantasy..."
     ExtraindoDadosLiga = "Coletando estatisticas da liga..."
     MontandoObjeto = "Montando objetos..."
