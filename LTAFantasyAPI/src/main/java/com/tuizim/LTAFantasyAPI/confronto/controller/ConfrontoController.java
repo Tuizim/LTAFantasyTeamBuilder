@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConfrontoController {
     private final ConfrontoService confrontoService;
-    @PutMapping()
+    @PostMapping()
     public ResponseEntity<Confronto> criarConfronto(@RequestBody Confronto confronto){
         return ResponseEntity.ok(confrontoService.criarConfronto(confronto));
     }
