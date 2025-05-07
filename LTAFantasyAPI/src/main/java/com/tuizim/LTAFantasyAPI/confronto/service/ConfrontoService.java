@@ -39,7 +39,7 @@ public class ConfrontoService {
 
     public Confronto criarConfronto(Confronto confronto) {
         Confronto confrontoTratado = tratarConfronto(confronto);
-        if (confrontoDAO.existsByTimesEitherOrderAndData(confrontoTratado.getId(),confrontoTratado.getId(),confrontoTratado.getData_confronto())){
+        if (confrontoDAO.existsByTimesEitherOrderAndData(confrontoTratado.getTime1().getId(),confrontoTratado.getTime2().getId(),confrontoTratado.getData_confronto())){
             throw new RuntimeException(ErrorMessages.CONFRONTO_JUST_EXISTS);
         }
         return confrontoDAO.save(confrontoTratado);
@@ -47,8 +47,8 @@ public class ConfrontoService {
     public List<Confronto> criarConfrontoLote(List<Confronto> confrontos) {
         List<Confronto> newConfrontos = new ArrayList<>();
         for (Confronto confronto : confrontos) {
-            Confronto confrontoTratado = tratarConfronto(confronto);
-            if (!confrontoDAO.existsByTimesEitherOrderAndData(confrontoTratado.getId(),confrontoTratado.getId(),confrontoTratado.getData_confronto())){
+                Confronto confrontoTratado = tratarConfronto(confronto);
+            if (!confrontoDAO.existsByTimesEitherOrderAndData(confrontoTratado.getTime1().getId(),confrontoTratado.getTime2().getId(),confrontoTratado.getData_confronto())){
                 newConfrontos.add(confrontoTratado);
             }
         }
