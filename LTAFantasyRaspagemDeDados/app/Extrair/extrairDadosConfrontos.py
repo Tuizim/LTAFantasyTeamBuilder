@@ -65,7 +65,11 @@ def extrair_dados_fantasy_confrontos(cookieid):
                     slides = page.query_selector_all(html["slides-time"])
                     for slide in slides:
                         imgs = slide.query_selector_all("img")
+                        if (len(imgs)==0):
+                            break
                         datas = slide.query_selector_all(html["data"])
+                        if (len(datas)==0):
+                            break
                         data = converter_data(datas[0].inner_text())
                         confronto =[img.get_attribute("alt").upper() for img in imgs if img.get_attribute("alt").upper()]
                         time1 = normalizar_texto(confronto[0])
@@ -77,7 +81,8 @@ def extrair_dados_fantasy_confrontos(cookieid):
                         confrontos.append(confronto_obj)
                     browser.close()
                     break
-                except:
+                except RuntimeError as e:
+                    print(e)
                     if tentativa==tentativas-1:
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
                         break
