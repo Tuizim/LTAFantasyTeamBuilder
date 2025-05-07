@@ -25,10 +25,10 @@ public class JogadorService {
         if (liga == null && rota == null) {
             return jogadorDAO.findAll();
         }
-        else if (liga == null && rota != null) {
+        else if (liga == null) {
             return jogadorDAO.findByRota(rota);
         }
-        else if (liga != null && rota == null) {
+        else if (rota == null) {
             return jogadorDAO.findByLiga(liga);
         }
         else{
