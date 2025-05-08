@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-import app.Comum.util as util
+import app.Comum.normalizar_dados as normalizar_dados
 
 def extrair_dados_por_liga(liga,endpoint_liga):
     try:
@@ -46,14 +46,14 @@ def extrair_dados_por_liga(liga,endpoint_liga):
                 {
                     "nickname":nickname,
                     "time": time,
-                    "jogos":util.normalizar_int(jogos),
-                    "win_rate":util.normalizar_porc(win_rate),
-                    "kda":util.normalizar_float(kda),
-                    "kill_rate":util.normalizar_float(kill_rate),
-                    "death_rate":util.normalizar_float(death_rate),
-                    "assist_rate":util.normalizar_float(assist_rate),
-                    "cs_minuto": util.normalizar_float(cs_minuto),
-                    "participa_abate":util.normalizar_porc(participa_abate),
+                    "jogos":normalizar_dados.normalizar_int(jogos),
+                    "win_rate":normalizar_dados.normalizar_porc(win_rate),
+                    "kda":normalizar_dados.normalizar_float(kda),
+                    "kill_rate":normalizar_dados.normalizar_float(kill_rate),
+                    "death_rate":normalizar_dados.normalizar_float(death_rate),
+                    "assist_rate":normalizar_dados.normalizar_float(assist_rate),
+                    "cs_minuto": normalizar_dados.normalizar_float(cs_minuto),
+                    "participa_abate":normalizar_dados.normalizar_porc(participa_abate),
                     "liga":liga
                 } 
                 )

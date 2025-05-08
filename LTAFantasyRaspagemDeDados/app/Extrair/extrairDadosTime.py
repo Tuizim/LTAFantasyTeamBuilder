@@ -44,7 +44,7 @@ def extrair_dados_fantasy_time(cookieid):
                             times.append(time.upper())
                     browser.close()
                     break
-                except:
+                except TimeoutError:
                     if tentativa==tentativas-1:
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
                         break
@@ -52,8 +52,6 @@ def extrair_dados_fantasy_time(cookieid):
                         logs.respostas_time_out(logs.enums.timeOut.timeOut)
                         continue
         return times
-                        
-            
-                      
+                     
     except RuntimeError as e:
         print(f"Caught: {e}")

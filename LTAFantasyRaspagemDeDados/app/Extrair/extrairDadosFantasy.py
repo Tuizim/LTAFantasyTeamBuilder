@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-import app.Comum.util as util
+import app.Comum.normalizar_dados as normalizar_dados
 import app.Comum.logs as logs
 def extrair_dados_fantasy(cookieid):
     try:
@@ -58,15 +58,15 @@ def extrair_dados_fantasy(cookieid):
                             {
                                 "nickname":nick,
                                 "rota":lane,
-                                "media_pontos": util.normalizar_float(media_pontos),
-                                "ultimo_ponto":util.normalizar_float(ultimo_ponto),
-                                "valor_atual":util.normalizar_float(valor_atual),
-                                "flutuacao_mercado":util.normalizar_float(flutuacao)
+                                "media_pontos": normalizar_dados.normalizar_float(media_pontos),
+                                "ultimo_ponto":normalizar_dados.normalizar_float(ultimo_ponto),
+                                "valor_atual":normalizar_dados.normalizar_float(valor_atual),
+                                "flutuacao_mercado":normalizar_dados.normalizar_float(flutuacao)
                             }
                         )
                     browser.close()
                     break
-                except:
+                except TimeoutError:
                     if (tentativa == tentativas-1):
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
                         break

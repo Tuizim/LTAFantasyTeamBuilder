@@ -3,8 +3,6 @@ from app.atualizador import atualizar_jogadores,atualizar_times,atualizar_confro
 import app.Comum.logs as logs
 
 
-
-
 logs.bem_vindo()
 cookie_id = logs.menu_inicial()
 

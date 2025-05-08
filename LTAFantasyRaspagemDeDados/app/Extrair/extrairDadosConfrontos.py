@@ -2,23 +2,24 @@ from playwright.sync_api import sync_playwright
 from app.Comum import logs
 from datetime import datetime
 from app.Models.times import Confronto,Time
-from app.Comum.util import normalizar_texto
+from app.Comum.normalizar_dados import normalizar_texto
 
-meses = {
-    'jan': '01',
-    'fev': '02',
-    'mar': '03',
-    'abr': '04',
-    'mai': '05',
-    'jun': '06',
-    'jul': '07',
-    'ago': '08',
-    'set': '09',
-    'out': '10',
-    'nov': '11',
-    'dez': '12'
-}
+
 def converter_data(data_str, ano=datetime.now().year):
+    meses = {
+        'jan': '01',
+        'fev': '02',
+        'mar': '03',
+        'abr': '04',
+        'mai': '05',
+        'jun': '06',
+        'jul': '07',
+        'ago': '08',
+        'set': '09',
+        'out': '10',
+        'nov': '11',
+        'dez': '12'
+    }
     partes = data_str.split(",")[-1].strip().split(".")
     mes_abrev = partes[0].strip()
     dia = partes[1].strip().zfill(2)
@@ -39,13 +40,13 @@ def extrair_dados_fantasy_confrontos(cookieid):
                 "sameSite": "Lax"
             }
         ]
-
         html = {
             "linha-times":"div.relative > div.overflow-hidden > div.flex.-ml-2",
             "slides-time":"div.relative > div.overflow-hidden > div.flex.-ml-2 > div",
             "spans-times":"span.text-sm.text-center.text-muted-foreground",
             "data":"div.w-full.flex.flex-row.items-center.justify-between > span"
         }
+        
         confrontos = []
         tentativas = 3
         for tentativa in range(tentativas):
@@ -81,17 +82,16 @@ def extrair_dados_fantasy_confrontos(cookieid):
                         confrontos.append(confronto_obj)
                     browser.close()
                     break
-                except RuntimeError as e:
-                    print(e)
+                except TimeoutError:
                     if tentativa==tentativas-1:
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
                         break
                     else:
                         logs.respostas_time_out(logs.enums.timeOut.timeOut)
                         continue
-        return confrontos
-                        
-            
+                except:
+                    return confronto
+        return confrontos        
                       
     except RuntimeError as e:
         print(f"Caught: {e}")
