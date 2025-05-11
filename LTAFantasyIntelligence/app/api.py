@@ -13,7 +13,7 @@ def trazer_dados_api():
     API_JAVA_HOST = os.getenv("API_JAVA_HOST", "localhost")
     API_JAVA_PORT = os.getenv("API_JAVA_PORT", "8080")
 
-    url = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores?sortBy=nickname&ordem=asc"
+    url = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores"
     response = requests.get(url)
     jogadores = response.json()
     
@@ -25,11 +25,11 @@ def trazer_dados_api():
             nickname=jogador["nickname"],
             rota=jogador["rota"],
             jogos=jogador["jogos"],
-            win_rate=jogador["win_rate"],
             kda=jogador["kda"],
+            win_rate=jogador["win_rate"],
             cs_minuto=jogador["cs_minuto"],
             participa_abate=jogador["participa_abate"],
-            media_pontos=jogador["media_ponto"],
+            media_pontos=jogador["media_pontos"],
             ultimo_ponto=jogador["ultimo_ponto"],
             valor_atual=jogador["valor_atual"],
             score=0

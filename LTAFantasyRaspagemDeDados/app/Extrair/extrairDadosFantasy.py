@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright
-import app.Comum.util as util
+import app.Comum.normalizar_dados as normalizar_dados
 import app.Comum.logs as logs
 def extrair_dados_fantasy(cookieid):
     try:
@@ -24,13 +24,18 @@ def extrair_dados_fantasy(cookieid):
             "valor_atual": "div.flex.text-sm.items-center.font-kurdis.text-right.justify-end span.font-kurdis-extra-bold",
             "flutuacao": "div.flex.text-sm.items-center.font-kurdis.text-right.justify-end span.font-red-hat-display-semi-bold"
         }
+
         jogadores =[]
-        sucess = False
         tentativas = 3
         for tentativa in range(tentativas):
             with sync_playwright() as p:
                 browser = p.chromium.launch(headless=True)
-                context = browser.new_context()
+                context = browser.new_context(
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    viewport={"width": 1280, "height": 800},
+                    java_script_enabled=True,
+                    locale="pt-BR"
+                )
                 context.add_cookies(cookies)
                 page = context.new_page()
                 try:
@@ -53,24 +58,22 @@ def extrair_dados_fantasy(cookieid):
                             {
                                 "nickname":nick,
                                 "rota":lane,
-                                "media_pontos": util.normalizar_float(media_pontos),
-                                "ultimo_ponto":util.normalizar_float(ultimo_ponto),
-                                "valor_atual":util.normalizar_float(valor_atual),
-                                "flutuacao_mercado":util.normalizar_float(flutuacao)
+                                "media_pontos": normalizar_dados.normalizar_float(media_pontos),
+                                "ultimo_ponto":normalizar_dados.normalizar_float(ultimo_ponto),
+                                "valor_atual":normalizar_dados.normalizar_float(valor_atual),
+                                "flutuacao_mercado":normalizar_dados.normalizar_float(flutuacao)
                             }
                         )
-                    sucess=True
                     browser.close()
                     break
-                except:
+                except TimeoutError:
                     if (tentativa == tentativas-1):
                         logs.respostas_time_out(logs.enums.timeOut.timeOutFalha)
-                        jogadores = []
                         break
                     else:
                         logs.respostas_time_out(logs.enums.timeOut.timeOut)
                         continue
-        return jogadores if sucess==True else []
+        return jogadores
             
     except RuntimeError as e:
         print(f"Caught: {e}")

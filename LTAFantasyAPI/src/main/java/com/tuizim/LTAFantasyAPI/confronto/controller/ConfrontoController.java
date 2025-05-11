@@ -13,9 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConfrontoController {
     private final ConfrontoService confrontoService;
-    @PutMapping()
+    @PostMapping()
     public ResponseEntity<Confronto> criarConfronto(@RequestBody Confronto confronto){
         return ResponseEntity.ok(confrontoService.criarConfronto(confronto));
+    }
+    @PostMapping("/lote")
+    public ResponseEntity<List<Confronto>> criarConfrontoLote(@RequestBody List<Confronto> confrontos){
+        return ResponseEntity.ok(confrontoService.criarConfrontoLote(confrontos));
     }
 
     @DeleteMapping()
