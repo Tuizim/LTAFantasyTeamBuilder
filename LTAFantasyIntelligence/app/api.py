@@ -1,19 +1,21 @@
 from fastapi import FastAPI,Query
 from app.core.classes.jogadores_por_rota import JogadoresPorRota
-from app.core.classes.avaliador_jogador import AvaliadorDeJogador
+from app.core.avalidador.avaliador_jogador import AvaliadorDeJogador
 from app.core.classes.jogador import Player
 from app.core.inteligencia import encontrar_melhor_time
+from app.core.Enum.ligas import Ligas
 import requests
 import os
 import requests
 
 app = FastAPI()
 
-def trazer_dados_api():
+def trazer_dados_api(liga:None):
     API_JAVA_HOST = os.getenv("API_JAVA_HOST", "localhost")
     API_JAVA_PORT = os.getenv("API_JAVA_PORT", "8080")
 
     url = f"http://{API_JAVA_HOST}:{API_JAVA_PORT}/jogadores"
+    if liga: url= url + "?liga=" + liga
     response = requests.get(url)
     jogadores = response.json()
     
@@ -26,12 +28,16 @@ def trazer_dados_api():
             rota=jogador["rota"],
             jogos=jogador["jogos"],
             kda=jogador["kda"],
+            kill_rate=jogador["kill_rate"],
+            death_rate=jogador["death_rate"],
+            assist_rate=jogador["assist_rate"],
             win_rate=jogador["win_rate"],
             cs_minuto=jogador["cs_minuto"],
             participa_abate=jogador["participa_abate"],
             media_pontos=jogador["media_pontos"],
             ultimo_ponto=jogador["ultimo_ponto"],
             valor_atual=jogador["valor_atual"],
+            liga= jogador["liga"],
             score=0
         )
         jogador_obj.score = avaliador.calcular_score(jogador_obj)
@@ -41,10 +47,9 @@ def trazer_dados_api():
     return jogador_por_rota
 
 @app.get("/melhor-time")
-def gerar_time(orcamento: float=50):
+def gerar_time(orcamento: float=50, Liga: Ligas=None):
 
-    jogador_por_rota = trazer_dados_api()
-    AvaliadorDeJogador.ajustar_score_jogadores(jogador_por_rota)
+    jogador_por_rota = trazer_dados_api(Liga)
     
     resultado = encontrar_melhor_time(jogador_por_rota,orcamento)
     return {
@@ -64,8 +69,7 @@ def gerar_time(orcamento: float=50):
     }
     
 @app.get("/melhores-jogadores-por-rota")
-def gerar_lista_jogadores():
-    jogador_por_rota = trazer_dados_api()
-    AvaliadorDeJogador.ajustar_score_jogadores(jogador_por_rota)
+def gerar_lista_jogadores(Liga: Ligas=None):
+    jogador_por_rota = trazer_dados_api(Liga)
     jogador_por_rota.ordernar_por_score()
     return jogador_por_rota
