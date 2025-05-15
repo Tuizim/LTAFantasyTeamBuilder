@@ -17,4 +17,4 @@ COPY . /app
 EXPOSE 8000
 
 # Comando para rodar a aplicação com uvicorn
-CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.controller.api:app", "--host", "0.0.0.0", "--port", "8000"]
