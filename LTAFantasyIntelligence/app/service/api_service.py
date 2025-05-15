@@ -1,4 +1,4 @@
-from app.core.inteligencia import pontuar_jogadores
+from app.core.avalidador.pontuar_jogador import pontuar_jogadores
 from app.repository.api_repository import trazer_dados_api
 from app.converter.jogador_converter import jsonToJogador,jogadorToRota
 from app.core.inteligencia import encontrar_melhor_time
